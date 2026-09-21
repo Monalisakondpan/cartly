@@ -12,6 +12,28 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: cartly
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: cartly
+      JWT_SECRET: ci-test-secret
+      UPLOAD_BASE_URL: http://localhost:8080
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -19,6 +41,11 @@ jobs:
           go-version: '1.22'
       - name: Install dependencies
         run: go mod download
+      - name: Load database schema
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          PGPASSWORD=postgres psql -h localhost -U postgres -d cartly -f migrations/001_init.sql
+          PGPASSWORD=postgres psql -h localhost -U postgres -d cartly -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
       - name: Run tests
         run: go test ./...
       - name: Build
