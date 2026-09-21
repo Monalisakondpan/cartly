@@ -33,7 +33,7 @@ func GenerateProductDescription(apiKey, productName, keywords string) (string, e
 	)
 
 	reqBody := groqRequest{
-		Model: "llama-3.1-8b-instant",
+		Model: "openai/gpt-oss-20b",
 		Messages: []groqMessage{
 			{Role: "user", Content: prompt},
 		},
