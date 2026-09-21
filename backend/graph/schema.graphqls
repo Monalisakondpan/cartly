@@ -1,0 +1,294 @@
+type Product {
+  id: ID!
+  storeId: ID!
+  categoryId: ID
+  name: String!
+  slug: String!
+  description: String
+  price: Float!
+  stockQuantity: Int!
+  imageUrl: String
+  weightGrams: Int
+  suggestedPackage: String
+}
+type Query {
+  products(storeId: ID!, search: String, categoryId: ID, limit: Int, offset: Int): [Product!]!
+}
+input NewProduct {
+  storeId: ID!
+  categoryId: ID
+  name: String!
+  slug: String!
+  description: String
+  price: Float!
+  stockQuantity: Int!
+  imageUrl: String
+  weightGrams: Int
+}
+type Mutation {
+  createProduct(input: NewProduct!): Product!
+}
+type AuthUser {
+  id: ID!
+  email: String!
+  role: String!
+  firstName: String
+  lastName: String
+  mobileNumber: String
+  country: String
+  address: String
+}
+input RegisterInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  mobileNumber: String!
+  country: String!
+  address: String!
+}
+extend type Mutation {
+   register(input: RegisterInput!): AuthUser!
+}
+input LoginInput {
+  email: String!
+  password: String!
+}
+type AuthPayload {
+  token: String!
+  refreshToken: String!
+  user: AuthUser!
+}
+extend type Mutation {
+  login(input: LoginInput!): AuthPayload!
+}
+type Store {
+  id: ID!
+  userId: ID!
+  name: String!
+  slug: String!
+  description: String
+}
+input NewStore {
+  name: String!
+  slug: String!
+  description: String
+}
+input UpdateStoreInput {
+  name: String
+  slug: String
+  description: String
+}
+extend type Mutation {
+  createStore(input: NewStore!): Store!
+  updateStore(input: UpdateStoreInput!): Store!
+}
+extend type Query {
+  myStore: Store
+}
+input UpdateProductInput {
+  name: String
+  categoryId: ID
+  slug: String
+  description: String
+  price: Float
+  stockQuantity: Int
+  imageUrl: String
+  weightGrams: Int
+}
+extend type Mutation {
+  updateProduct(id: ID!, input: UpdateProductInput!): Product!
+  deleteProduct(id: ID!): Boolean!
+}
+type Category {
+  id: ID!
+  storeId: ID!
+  name: String!
+  slug: String!
+}
+input NewCategory {
+  storeId: ID!
+  name: String!
+  slug: String!
+}
+extend type Mutation {
+  createCategory(input: NewCategory!): Category!
+}
+extend type Query {
+  categories(storeId: ID!): [Category!]!
+}
+extend type Query {
+  storeBySlug(slug: String!): Store
+}
+extend type Query {
+  productBySlug(storeId: ID!, slug: String!): Product
+}
+type Customer {
+  id: ID!
+  email: String!
+  fullName: String!
+}
+input RegisterCustomerInput {
+  email: String!
+  password: String!
+  fullName: String!
+}
+input LoginCustomerInput {
+  email: String!
+  password: String!
+}
+type CustomerAuthPayload {
+  token: String!
+  refreshToken: String!
+  customer: Customer!
+}
+extend type Mutation {
+  registerCustomer(input: RegisterCustomerInput!): CustomerAuthPayload!
+  loginCustomer(input: LoginCustomerInput!): CustomerAuthPayload!
+}
+input OrderItemInput {
+  productId: ID!
+  quantity: Int!
+}
+type OrderItem {
+  id: ID!
+  productId: ID!
+  quantity: Int!
+  priceAtPurchase: Float!
+}
+type Order {
+  id: ID!
+  storeId: ID!
+  customerId: ID!
+  status: String!
+  total: Float!
+  items: [OrderItem!]!
+}
+input NewOrder {
+  storeId: ID!
+  items: [OrderItemInput!]!
+  idempotencyKey: String
+}
+extend type Mutation {
+  createOrder(input: NewOrder!): Order!
+}
+extend type Query {
+  myOrders: [Order!]!
+}
+input UpdateOrderStatusInput {
+  status: String!
+}
+extend type Mutation {
+  updateOrderStatus(orderId: ID!, input: UpdateOrderStatusInput!): Order!
+}
+extend type Mutation {
+  generateProductDescription(name: String!, keywords: String): String!
+}
+
+extend type Mutation {
+  deleteStore: Boolean!
+}
+
+type Admin {
+  id: ID!
+  email: String!
+}
+
+input LoginAdminInput {
+  email: String!
+  password: String!
+}
+
+type AdminAuthPayload {
+  token: String!
+  refreshToken: String!
+  admin: Admin!
+}
+
+extend type Mutation {
+  loginAdmin(input: LoginAdminInput!): AdminAuthPayload!
+}
+
+type StoreWithOwner {
+  id: ID!
+  name: String!
+  slug: String!
+  ownerEmail: String!
+  ownerName: String!
+  productCount: Int!
+  orderCount: Int!
+}
+
+type PlatformStats {
+  totalStores: Int!
+  totalOwners: Int!
+  totalCustomers: Int!
+  totalOrders: Int!
+}
+
+extend type Query {
+  allStores: [StoreWithOwner!]!
+  platformStats: PlatformStats!
+}
+
+extend type Mutation {
+  adminDeleteStore(storeId: ID!): Boolean!
+}
+
+type RefreshPayload {
+  token: String!
+}
+
+extend type Mutation {
+  refreshToken(refreshToken: String!): RefreshPayload!
+}
+
+extend type Query {
+  stores: [Store!]!
+}
+
+extend type Mutation {
+  requestPasswordReset(emailAddress: String!, role: String!): Boolean!
+  resetPassword(token: String!, newPassword: String!): Boolean!
+}
+
+type CurrentUser {
+  id: ID!
+  email: String!
+  role: String!
+  name: String
+}
+
+extend type Query {
+  me: CurrentUser
+}
+
+type OwnerWithStats {
+  id: ID!
+  email: String!
+  firstName: String
+  lastName: String
+  country: String
+}
+
+type CustomerWithStats {
+  id: ID!
+  email: String!
+  fullName: String!
+}
+
+type OrderWithDetails {
+  id: ID!
+  storeId: ID!
+  storeName: String!
+  customerId: ID!
+  customerEmail: String!
+  status: String!
+  total: Float!
+}
+
+extend type Query {
+  allOwners: [OwnerWithStats!]!
+  allCustomers: [CustomerWithStats!]!
+  allOrders: [OrderWithDetails!]!
+}

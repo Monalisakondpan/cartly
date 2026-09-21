@@ -1,0 +1,168 @@
+:root {
+  --color-nav: #111111;
+  --color-primary: #FF6600;
+  --color-primary-hover: #E55A00;
+  --color-accent: #FF6600;
+  --color-muted: #4A4A4A;
+  --color-text: #111111;
+  --color-background: #FFFFFF;
+  --color-card: #F9F9F9;
+  --color-border: #E5E5E5;
+  --color-error: #DC2626;
+  --color-success: #10B981;
+  --font-family: 'Segoe UI', system-ui, sans-serif;
+  --radius: 8px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--color-background);
+  color: var(--color-text);
+  overflow-x: hidden;
+}
+h1, h2, h3 {
+  color: var(--color-text);
+  font-weight: 700;
+}
+button {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s ease;
+  font-weight: 600;
+}
+button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+button:disabled {
+  background: var(--color-border);
+  cursor: not-allowed;
+}
+button.secondary {
+  background: var(--color-card);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+button.secondary:hover:not(:disabled) {
+  background: var(--color-border);
+}
+input, select {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: var(--font-family);
+  background: var(--color-background);
+  color: var(--color-text);
+  transition: border-color 0.2s ease;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 24px;
+  color: var(--color-text);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.tag {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-in {
+  animation: fadeInUp 0.4s ease-out;
+}
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap !important;
+    padding: 12px 16px !important;
+    gap: 10px;
+  }
+  nav > div {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  nav h1 {
+    font-size: 18px !important;
+  }
+  nav img {
+    height: 28px !important;
+  }
+  nav a, nav span, nav button {
+    font-size: 13px !important;
+  }
+  h1 {
+    font-size: 28px !important;
+  }
+  h2 {
+    font-size: 20px !important;
+  }
+  .card {
+    padding: 16px !important;
+  }
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+  }
+  .scroll-row {
+    flex-direction: column !important;
+    overflow-x: visible !important;
+  }
+  .scroll-row > a {
+    width: 100%;
+  }
+  .scroll-row > a > .card {
+    min-width: 100% !important;
+  }
+}
+@media (max-width: 480px) {
+  nav h1 {
+    font-size: 16px !important;
+  }
+  h1 {
+    font-size: 24px !important;
+  }
+  .card {
+    padding: 12px !important;
+  }
+}

@@ -1,0 +1,9 @@
+backend/cmd/server/server.exe
+*.exe
+.env
+.env.local
+node_modules/
+frontend/dist/
+frontend/build/
+.vscode/
+.idea/
