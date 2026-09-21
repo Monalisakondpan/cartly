@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { client } from './main'
 import Login from './Login'
 import Register from './Register'
 import StoreDashboard from './StoreDashboard'
@@ -29,21 +30,25 @@ function App() {
   const handleLoginSuccess = (newToken: string) => {
     localStorage.setItem('token', newToken)
     setToken(newToken)
+    client.clearStore()
   }
 
   const handleLogout = () => {
     localStorage.removeItem('token')
     setToken(null)
+    client.clearStore()
   }
 
   const handleAdminLoginSuccess = (newToken: string) => {
     localStorage.setItem('adminToken', newToken)
     setAdminToken(newToken)
+    client.clearStore()
   }
 
   const handleAdminLogout = () => {
     localStorage.removeItem('adminToken')
     setAdminToken(null)
+    client.clearStore()
   }
 
   return (

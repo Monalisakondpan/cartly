@@ -115,7 +115,7 @@ const authLink = new ApolloLink((operation, forward) => {
   })
 })
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   link: from([authLink, httpLink]),
   cache: new InMemoryCache(),
 })
